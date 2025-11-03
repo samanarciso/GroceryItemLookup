@@ -22,6 +22,21 @@ namespace GroceryItemLookup.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DepartmentSupervisor", b =>
+                {
+                    b.Property<int>("DepartmentsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupervisorsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DepartmentsID", "SupervisorsID");
+
+                    b.HasIndex("SupervisorsID");
+
+                    b.ToTable("DepartmentSupervisor");
+                });
+
             modelBuilder.Entity("GroceryItemLookup.Models.Department", b =>
                 {
                     b.Property<int>("ID")
@@ -35,12 +50,7 @@ namespace GroceryItemLookup.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("SupervisorID")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("SupervisorID");
 
                     b.ToTable("Department");
                 });
@@ -52,9 +62,6 @@ namespace GroceryItemLookup.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("DepartmentID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -76,8 +83,6 @@ namespace GroceryItemLookup.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("DepartmentID");
-
                     b.ToTable("Employee");
 
                     b.HasDiscriminator().HasValue("Employee");
@@ -93,7 +98,7 @@ namespace GroceryItemLookup.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SKU"));
 
-                    b.Property<int?>("DepartmentID")
+                    b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -126,37 +131,35 @@ namespace GroceryItemLookup.Migrations
                     b.HasDiscriminator().HasValue("Supervisor");
                 });
 
-            modelBuilder.Entity("GroceryItemLookup.Models.Department", b =>
-                {
-                    b.HasOne("GroceryItemLookup.Models.Supervisor", null)
-                        .WithMany("Departments")
-                        .HasForeignKey("SupervisorID");
-                });
-
-            modelBuilder.Entity("GroceryItemLookup.Models.Employee", b =>
+            modelBuilder.Entity("DepartmentSupervisor", b =>
                 {
                     b.HasOne("GroceryItemLookup.Models.Department", null)
-                        .WithMany("Supervisors")
-                        .HasForeignKey("DepartmentID");
+                        .WithMany()
+                        .HasForeignKey("DepartmentsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GroceryItemLookup.Models.Supervisor", null)
+                        .WithMany()
+                        .HasForeignKey("SupervisorsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GroceryItemLookup.Models.Product", b =>
                 {
-                    b.HasOne("GroceryItemLookup.Models.Department", null)
+                    b.HasOne("GroceryItemLookup.Models.Department", "Department")
                         .WithMany("Products")
-                        .HasForeignKey("DepartmentID");
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("GroceryItemLookup.Models.Department", b =>
                 {
                     b.Navigation("Products");
-
-                    b.Navigation("Supervisors");
-                });
-
-            modelBuilder.Entity("GroceryItemLookup.Models.Supervisor", b =>
-                {
-                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }

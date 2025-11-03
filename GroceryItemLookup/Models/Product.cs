@@ -18,6 +18,8 @@ namespace GroceryItemLookup.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         [Display(Name = "Description")]
+
+        public Department Department { get; set; }
         public string Description { get; set; }
         [Display(Name = "Weight")]
         public string Weight { get; set; }

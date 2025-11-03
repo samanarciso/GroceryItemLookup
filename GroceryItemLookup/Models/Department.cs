@@ -22,7 +22,7 @@ namespace GroceryItemLookup.Models
 
         [Required]
         [Display(Name = "Supervisors")]
-        public List<Employee> Supervisors { get; set; }
+        public List<Supervisor> Supervisors { get; set; }
 
     }
 }
