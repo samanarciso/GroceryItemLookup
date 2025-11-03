@@ -15,6 +15,9 @@ This is just one issue with the program I intend to work around in this mock ver
 | 4    | Diagnostics               | add healthz endpoint                                                                  | Reports if database is reachable                             | Stop DB and hit /healthz  |
 | 5    | Logging                   | log all entity creation                                                               | Record logs of database changes                              | check log output  |
 | 6    | Stored Procedures         | Call SP: Sort items by price asc/desc                                                 | Allow users to refine searches                               | Run SP in app and DB; compare results  |
+| 7    | Deployment                | Deploy app to azure web service                                                       | Make app accessible                                          | Visit public URL; confirm health endpoint and one page load  |
+
+
 
 
 
@@ -24,5 +27,3 @@ I added Product, Department, Employee, and Supervisor models to the project and 
 The database structure of this app will remain relatively simple as there are few relationships between tables.  Some relationships include the Department class having a one-to-many relationship with products, where one department has many products but every product has one department. There also exists a many-to-many relationship between Departments and Supervisors, where one Department can have multiple assigned Supervisors and one Supervisor can be assigned many departments. 
 
 In the finished version of the app, users will be able to search for products not just by name or department, but by ordering Supervisor, which will search items through filtering by a Supervisor’s assigned departments, then displaying the items contained in each assigned Department’s Product list.
-
-| 7    | Deployment                | Deploy app to azure web service                                                       | Make app accessible                                          | Visit public URL; confirm health endpoint and one page load  |
