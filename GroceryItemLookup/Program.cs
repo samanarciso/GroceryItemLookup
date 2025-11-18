@@ -1,8 +1,10 @@
+using GroceryItemLookup.Data;
+using GroceryItemLookup.Services;
+using GroceryItemLookup.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using GroceryItemLookup.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,16 @@ builder.Services.AddDbContext<GroceryItemLookupContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

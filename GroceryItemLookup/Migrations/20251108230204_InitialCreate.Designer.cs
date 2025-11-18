@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GroceryItemLookup.Migrations
 {
     [DbContext(typeof(GroceryItemLookupContext))]
-    [Migration("20251103143126_InitialCreate")]
+    [Migration("20251108230204_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

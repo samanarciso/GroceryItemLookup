@@ -15,14 +15,11 @@ namespace GroceryItemLookup.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-
-        [Required]
         [Display(Name = "Products")]
-        public List<Product> Products { get; set; }
+        public List<Product> Products { get; set; } = new();
 
-        [Required]
         [Display(Name = "Supervisors")]
-        public List<Supervisor> Supervisors { get; set; }
+        public List<Supervisor> Supervisors { get; set; } = new();
 
     }
 }
