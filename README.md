@@ -1,4 +1,4 @@
-# NewGroceryItemLookup
+# GroceryItemLookup
 ASP.NET Core MVC project that will allow users to search through a database of products, employees, departments, and sales/ordering records for a fictional grocery store.
 
 ## Project Inspiration and Summary
@@ -32,14 +32,14 @@ In the finished version of the app, users will be able to search for products no
 I added the Product Service to the project and registered it to the Dependency Injection container with the a Scoped lifetime. I moved some logic from the Product model into the service to keep the project modular and to ensure that the model classes don't get bloated with unnessary code that can be placed elsewhere.
 
 The ProductService class contains a number of useful methods for interacting with product data, such as:
-- GetProducts()
-  returns an IEnumerable list of all products in the database
--GetProductBySKU(int sku)
-  returns the product with the given SKU
--GetDepartments()  (will later be moved to a DepartmentService class)
-  returns enumerable list of departments
--GetDepartmentByID(int id)
-  returns department of given id
+* GetProducts()
+  - returns an IEnumerable list of all products in the database
+* GetProductBySKU(int sku)
+  - returns the product with the given SKU
+* GetDepartments()  (will later be moved to a DepartmentService class)
+  - returns enumerable list of departments
+* GetDepartmentByID(int id)
+  - returns department of given id
 
 as well as AddProduct(Product product), UpdateProduct(Product product), and DeleteProduct(int sku) which add placeholder CRUD functionality to the project.
 
