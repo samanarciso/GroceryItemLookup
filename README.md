@@ -53,3 +53,7 @@ Some of these methods were moved into the ProductController, such as the functio
         }
 ```
 I still need to create service classes for the rest of the models and controllers in the project if I want to accurately replicate the funcitonality of Quick Item Lookup, but this gives me a good foundation to get started from. Next I'll refine the CRUD functionality and add async data access.
+
+## Week 12 Changes
+
+Considering that most of the foundation for CRUD functionality with Products was set in my last big push, there wasn't much to change this week. All I had to do was change the current functions to be called asynchronously as I already had some validation feedback on the create and edit form pages. EFCore supplies some methods like SaveChangesAsync() and FindAsync() which made this change easy, and left me with some time to think about the scope of this project as I think about my deadline.  I think it would be best to lessen the scope of this project and take the rest of my time only to flesh out the features relating to the Product and Department entities and their relationship rather than to go into how they would interact with Employee and Supervisor classes. It makes sense to me because I'd be able to meet all requirements of the project without having to worry about more moving parts of the app and rewriting a bunch of code with different class names. The core idea will also still be in the finished project as a searchable list of products with the ability to add, delete, or edit.
