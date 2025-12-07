@@ -15,9 +15,9 @@ namespace GroceryItemLookup.Controllers
             _logger = logger;
             _productService = productService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var products = _productService.GetProducts();
+            var products = await _productService.GetProducts();
             return View(products);
         }
         [HttpGet]
@@ -41,7 +41,7 @@ namespace GroceryItemLookup.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,8 @@ namespace GroceryItemLookup.Controllers
                 product.Department = department;
             }
 
-            _productService.AddProduct(product);
+            await _productService.AddProduct(product);
+            TempData["Message"] = "Product created successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -86,11 +87,11 @@ namespace GroceryItemLookup.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public async Task<IActionResult> Edit(Product product)
         {
             if (ModelState.IsValid)
             {
-                _productService.UpdateProduct(product);
+                await _productService.UpdateProduct(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -107,9 +108,9 @@ namespace GroceryItemLookup.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _productService.DeleteProduct(id);
+            await _productService.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }
     }

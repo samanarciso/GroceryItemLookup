@@ -15,9 +15,9 @@ namespace GroceryItemLookup.Services
             _context = context;
         }
 
-        public IEnumerable<Product> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts()
         {
-            return _context.Product.Include(p => p.Department).ToList();
+            return await _context.Product.Include(p => p.Department).ToListAsync();
         }
 
         public Product? GetProductBySKU(int sku)
@@ -36,25 +36,25 @@ namespace GroceryItemLookup.Services
             return _context.Department.FirstOrDefault(d => d.ID == id);
         }
 
-        public void AddProduct(Product product)
+        public async Task AddProduct(Product product)
         {
             _context.Product.Add(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateProduct(Product product)
+        public async Task UpdateProduct(Product product)
         {
             _context.Product.Update(product);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteProduct(int sku)
+        public async Task DeleteProduct(int sku)
         {
-            var product = _context.Product.Find(sku);
+            var product = await _context.Product.FindAsync(sku);
             if (product != null)
             {
                 _context.Product.Remove(product);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }
