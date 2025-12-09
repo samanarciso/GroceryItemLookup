@@ -1,5 +1,9 @@
 using GroceryItemLookup.Data;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Text.Json;
 using GroceryItemLookup.Services;
+using GroceryItemLookup.Diagnostics;
 using GroceryItemLookup.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +19,28 @@ builder.Services.AddDbContext<GroceryItemLookupContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddHealthChecks().AddDbContextCheck<GroceryItemLookupContext>("Database");
 
 var app = builder.Build();
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    },
+    ResponseWriter = DiagnosticsWriter.WriteResponse
+});
+app.MapHealthChecks("/healthz/ready", new HealthCheckOptions
+{
+    Predicate = healthCheck => healthCheck.Tags.Contains("ready")
+});
+
+app.MapHealthChecks("/healthz/live", new HealthCheckOptions
+{
+    Predicate = _ => false
+});
 
 using (var scope = app.Services.CreateScope())
 {

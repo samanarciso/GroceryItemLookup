@@ -88,13 +88,15 @@ namespace GroceryItemLookup.Controllers
             return View(department);
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var department = _departmentService.GetDepartmentById(id);
             if (department == null)
             {
                 return NotFound();
             }
+            var products = await _departmentService.GetProductsInDepartment(id);
+            ViewBag.Products = products;
             return View(department);
         }
 
