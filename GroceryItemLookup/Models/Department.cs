@@ -11,7 +11,7 @@ namespace GroceryItemLookup.Models
 
 
         [Required]
-        [StringLength(50, ErrorMessage = "Product name cannot be longer than 50 characters.")]
+        [StringLength(50, ErrorMessage = "Department name cannot be longer than 50 characters.")]
         [Display(Name = "Name")]
         public string Name { get; set; }
 

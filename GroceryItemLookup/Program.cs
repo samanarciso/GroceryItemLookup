@@ -14,6 +14,7 @@ builder.Services.AddDbContext<GroceryItemLookupContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
 
