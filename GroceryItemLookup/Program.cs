@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 builder.Services.AddDbContext<GroceryItemLookupContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GroceryItemLookupContext") ?? throw new InvalidOperationException("Connection string 'GroceryItemLookupContext' not found.")));

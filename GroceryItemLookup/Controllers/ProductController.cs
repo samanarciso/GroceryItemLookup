@@ -2,6 +2,7 @@
 using GroceryItemLookup.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using GroceryItemLookup.Logging;
 
 namespace GroceryItemLookup.Controllers
 {
@@ -18,17 +19,28 @@ namespace GroceryItemLookup.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _productService.GetProducts();
+            _logger.LogInformation("GetProducts() called, displaying products in Index");
             return View(products);
         }
         [HttpGet]
         public IActionResult Details(int id)
         {
             var product = _productService.GetProductBySKU(id);
-            if (product == null)
+            var transactionId = Guid.NewGuid().ToString();
+            using (_logger.BeginScope(new List<KeyValuePair<string, object>>
+                {
+                    new KeyValuePair<string, object>("TransactionId", transactionId),
+                }))
             {
-                return NotFound();
+                _logger.LogInformation(LogEvents.GetItem, "Details action, getting product {Id}", id);
+                if (product == null)
+                {
+                    _logger.LogWarning(LogEvents.GetItemNotFound, "Product {Id} NOT FOUND", id);
+                    return NotFound();
+                }
+                _logger.LogInformation(LogEvents.GetItem, "Successfully retrieved product {Id} details", id);
+                return View(product);
             }
-            return View(product);
         }
 
         [HttpGet]
