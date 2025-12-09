@@ -57,3 +57,20 @@ I still need to create service classes for the rest of the models and controller
 ## Week 12 Changes
 
 Considering that most of the foundation for CRUD functionality with Products was set in my last big push, there wasn't much to change this week. All I had to do was change the current functions to be called asynchronously as I already had some validation feedback on the create and edit form pages. EFCore supplies some methods like SaveChangesAsync() and FindAsync() which made this change easy, and left me with some time to think about the scope of this project as I think about my deadline.  I think it would be best to lessen the scope of this project and take the rest of my time only to flesh out the features relating to the Product and Department entities and their relationship rather than to go into how they would interact with Employee and Supervisor classes. It makes sense to me because I'd be able to meet all requirements of the project without having to worry about more moving parts of the app and rewriting a bunch of code with different class names. The core idea will also still be in the finished project as a searchable list of products with the ability to add, delete, or edit.
+
+## Week 13 Changes
+For this work session I worked on the Department controller as well as the Department service class, and created the necessary views for each CRUD function relating to Department info in the database. The requirements for this week were to add a /healthz endpoint, a dependency check, and enough detail to be returned in the health check without exposing secrets. I closely followed the documentation and tutorials provided by Microsoft to meet these requirements and kept the actual functionality light.  I even went ahead and created a separate class to keep the health check response writer separate from Program.cs. The final endpoint mapping looks like this:
+```
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    },
+    ResponseWriter = DiagnosticsWriter.WriteResponse
+});
+```
+I couldn't find anything in the documentation as to whether or not this is good practice, but it seemed like the right thing to do. With the endpoint added and the health checks mapped, the user can now reach a /healthz endpoint which gives safe information on the health of the app and whether or not connection with the database was successful upon running the app.
+
