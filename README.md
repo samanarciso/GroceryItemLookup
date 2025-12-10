@@ -74,3 +74,54 @@ app.MapHealthChecks("/healthz", new HealthCheckOptions
 ```
 I couldn't find anything in the documentation as to whether or not this is good practice, but it seemed like the right thing to do. With the endpoint added and the health checks mapped, the user can now reach a /healthz endpoint which gives safe information on the health of the app and whether or not connection with the database was successful upon running the app.
 
+## Week 14 Changes
+For this work session I added Logging features to the Product entity's Details endpoint. You can see the code here:
+```
+        public IActionResult Details(int id)
+        {
+            var product = _productService.GetProductBySKU(id);
+            var transactionId = Guid.NewGuid().ToString();
+            using (_logger.BeginScope(new List<KeyValuePair<string, object>>
+                {
+                    new KeyValuePair<string, object>("TransactionId", transactionId),
+                }))
+            {
+                _logger.LogInformation(LogEvents.GetItem, "Details action, getting product {Id}", id);
+                if (product == null)
+                {
+                    _logger.LogWarning(LogEvents.GetItemNotFound, "Product {Id} NOT FOUND", id);
+                    return NotFound();
+                }
+                _logger.LogInformation(LogEvents.GetItem, "Successfully retrieved product {Id} details", id);
+                return View(product);
+            }
+        }
+```
+The requirements for this week include logs on one success path and one error path, as well as useful fields (implemented here as TransactionId, the entity id, and the action of the endpoint) and verbage that makes the logs readable and actionable.
+A logging scope is created so that all log entried share the given TransactionId, allowing for easier tracing if there was more logging going on throughout the app. A message is logged when the user reaches the details endpoint of a product with a given Id, then a check is ran to see if the product exists.  If it does not, a warning log is displayed to the console letting the user or developer know that no product with the given Id was found. If the product does exist, a success message relating to the endpoint and entity is logged.
+
+## Week 15 Changes
+
+For this session, I added a stored procedure and integrated it into the application using Entity Framework Core.  You can see the code that executes the stored procedure here:
+```
+        public async Task<List<Product>> GetProductsByDepartment(int departmentId)
+        {
+            return await _context.Product
+                .FromSqlInterpolated($"EXECUTE dbo.GetProductsByDepartment {departmentId}")
+                .ToListAsync();
+        }
+```
+The GetProductsByDepartment method executes the stored procedure run by the code in the GetProductsByDepartment.sql script in the SQLScripts folder. This method is called in the Department controller, replacing the old code that populated the Details view with product information of a given DepartmentId. The SQL for creating the stored procedure can be seen here:
+```
+CREATE PROCEDURE dbo.GetProductsByDepartment
+    @DepartmentId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT p.SKU, p.Name, p.Description, p.Price, p.Weight, p.DepartmentID
+    FROM Product AS p
+    WHERE p.DepartmentID = @DepartmentId;
+END
+```
+Same as before, the returned product list is stored to a ViewBag, where the stored prodedure results are rendered in the Details view of the given department.
