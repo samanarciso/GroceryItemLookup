@@ -11,10 +11,11 @@ namespace GroceryItemLookup.Controllers
         private readonly ProductService _productService;
         private readonly DepartmentService _departmentService;
 
-        public DepartmentController(ILogger<DepartmentController> logger, DepartmentService departmentService)
+        public DepartmentController(ILogger<DepartmentController> logger, DepartmentService departmentService, ProductService productService)
         {
             _logger = logger;
             _departmentService = departmentService;
+            _productService = productService;
         }
         public async Task<IActionResult> Index()
         {
@@ -29,7 +30,7 @@ namespace GroceryItemLookup.Controllers
             {
                 return NotFound();
             }
-            var products = await _departmentService.GetProductsInDepartment(id);
+            var products = await _productService.GetProductsByDepartment(id);
             ViewBag.Products = products;
 
             return View(department);

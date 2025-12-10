@@ -27,6 +27,13 @@ namespace GroceryItemLookup.Services
                 .FirstOrDefault(p => p.SKU == sku);
         }
 
+        public async Task<List<Product>> GetProductsByDepartment(int departmentId)
+        {
+            return await _context.Product
+                .FromSqlInterpolated($"EXECUTE dbo.GetProductsByDepartment {departmentId}")
+                .ToListAsync();
+        }
+
         public IEnumerable<Department> GetDepartments()
         {
             return _context.Department.ToList();
