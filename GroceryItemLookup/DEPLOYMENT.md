@@ -34,6 +34,16 @@ In the Publish profile, under the Entity Framework Migrations section, you can s
 
 Click Publish and Visual Studio takes care of publishing the app to Azure.
 
+## 4.1. Adding the stored procedure to Azure SQL
+
+GroceryItemLookup relies on a stored procedure call for some of the data fetching from the database. Stored procedures such as this are not transferred automatically as with migrations, so they must be created manually in the Azure SQL Database.
+
+1. In SQL Server Object Explorer or SQL Server Management Studio, connect to the Azure SQL Database created earlier.
+2. Open the GetProductsByDepartment.sql script included in the project.
+3. Run the script against the Azure database.
+
+Once created, the application can execute the stored procedure normally.
+
 ## 5. Externalizing Secrets and Production Configuration
 
 After publishing, it's important to externalize sensitive information such as connection strings and production configurations.
