@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('serviceConnectorResourceGroupName')]/providers/Microsoft.Web/sites/GroceryItemLookup20251210171441/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsGroceryItemLookupContex_ECC5DEB6D7",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/groceryitemlookupdbserver/databases/GroceryItemLookup_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:GroceryItemLookupContext1",
+      "dynamicId": null
+    }
+  }
+}
