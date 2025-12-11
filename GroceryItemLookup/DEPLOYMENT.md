@@ -38,7 +38,9 @@ Click Publish and Visual Studio takes care of publishing the app to Azure.
 
 After publishing, it's important to externalize sensitive information such as connection strings and production configurations.
 In the Azure Portal, navigate to the App Service that was created, open Configuration, and add the following application setting:
+
 - ASPNETCORE_ENVIRONMENT = Production
+
 Next, in the Connection strings section, add an entry named GroceryItemLookupContext and paste the Azure SQL connection string that was
 generated when the database was created. Set the type to SQLAzure. A matching entry can appear in appsettings.Production.json, but it should remain empty so that no secrets are accidentally committed.
 
