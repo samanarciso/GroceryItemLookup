@@ -125,3 +125,7 @@ BEGIN
 END
 ```
 Same as before, the returned product list is stored to a ViewBag, where the stored prodedure results are rendered in the Details view of the given department.
+
+## Week 16 Changes - Deployment to Azure (Simulated)
+
+Although my Azure credits were not exhausted, I was unable to deploy my project and felt I had no other option to submit other than submitting the DEPLOYMENT.md substitute assignment. My deployment guide mostly mirrors the [guide](https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-webapp-using-vs?view=aspnetcore-10.0) provided by Microsoft, with a few extra steps to make deployment work with my app's unique setup. The most noteworthy instruction on my guide was the bit about implementing the stored procedure requirement from Week 15, seen in step 4.1.  This was necessary as the creation of the stored procedure would not transfer from the local development database to the production database.
